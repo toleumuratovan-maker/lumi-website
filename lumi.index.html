@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUMI — Learning Space</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink:#e9a8bd;
+  --pink-light:#fff0f5;
+  --purple:#a99bd6;
+  --ink:#353044;
+  --muted:#9993a5;
+  --bg:#faf8fb;
+  --white:#fff;
+}
+* {box-sizing:border-box;margin:0;padding:0}
+body {
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+}
+.layout {display:flex;min-height:100vh}
+.sidebar {
+  width:245px;background:white;padding:30px 22px;
+  border-right:1px solid #f1edf2;position:fixed;
+  height:100vh;display:flex;flex-direction:column;
+}
+.logo {
+  font-family:'Playfair Display',serif;font-size:29px;
+  letter-spacing:2px;color:#bd819b;margin-bottom:9px;
+}
+.logo-sub {font-size:11px;color:var(--muted);letter-spacing:2px}
+.nav-title {
+  font-size:10px;color:#b7afbd;letter-spacing:2px;
+  margin:38px 0 13px 10px;
+}
+.nav-item {
+  display:flex;align-items:center;gap:13px;
+  padding:13px 14px;border-radius:12px;
+  font-size:13px;color:#827c8e;cursor:pointer;
+  transition:.25s;margin-bottom:5px;
+}
+.nav-item:hover,.nav-item.active {
+  background:var(--pink-light);color:#b76f91;
+  transform:translateX(3px);
+}
+.nav-item.active {font-weight:700}
+.sidebar-bottom {margin-top:auto;background:#fcf3f7;
+  padding:18px;border-radius:16px;font-size:12px;line-height:1.7}
+.main {margin-left:245px;width:calc(100% - 245px);padding:35px 5% 50px}
+.topbar {display:flex;justify-content:space-between;align-items:center;margin-bottom:36px}
+.date {font-size:12px;color:var(--muted)}
+.avatar {
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,#f1c3d3,#c6b9e9);
+  display:grid;place-items:center;color:white;font-weight:700;
+}
+.greeting {margin-bottom:28px}
+.greeting h1 {
+  font-family:'Playfair Display',serif;font-size:34px;
+  font-weight:600;margin-bottom:8px;
+}
+.greeting p {font-size:13px;color:var(--muted)}
+.hero {
+  background:linear-gradient(115deg,#f6dce6,#eee7f9);
+  border-radius:22px;padding:30px 34px;
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:26px;position:relative;overflow:hidden;
+}
+.hero h2 {
+  font-family:'Playfair Display',serif;font-size:25px;
+  margin-bottom:10px;position:relative;z-index:1;
+}
+.hero p {font-size:12px;color:#796c82;line-height:1.8}
+.hero-icon {font-size:65px;opacity:.8;animation:float 4s ease-in-out infinite}
+@keyframes float {50%{transform:translateY(-9px)}}
+.section-head {
+  display:flex;justify-content:space-between;
+  align-items:center;margin:30px 0 17px;
+}
+.section-head h3 {font-size:16px;font-weight:700}
+.section-head span {font-size:11px;color:#b27b98}
+.stats {display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.card {
+  background:white;border:1px solid #f1edf2;
+  border-radius:17px;padding:21px;
+  transition:.3s;box-shadow:0 5px 20px rgba(65,40,70,.025);
+}
+.card:hover {transform:translateY(-4px);box-shadow:0 12px 30px #e8dce955}
+.stat-icon {
+  width:37px;height:37px;border-radius:12px;
+  display:grid;place-items:center;font-size:17px;margin-bottom:15px;
+}
+.card h2 {font-size:25px;margin-bottom:5px}
+.card p {font-size:11px;color:var(--muted)}
+.content-grid {display:grid;grid-template-columns:1.5fr 1fr;gap:18px}
+.task {
+  display:flex;align-items:center;gap:13px;
+  padding:15px 0;border-bottom:1px solid #f3eff3;
+}
+.task:last-child {border:0}
+.task input {accent-color:#d48eaa;width:16px;height:16px}
+.task-name {font-size:12px;font-weight:600}
+.task-sub {font-size:10px;color:var(--muted);margin-top:5px}
+.task.done .task-name {text-decoration:line-through;color:#aaa}
+.progress {
+  height:7px;background:#f4edf2;border-radius:10px;
+  overflow:hidden;margin-top:15px;
+}
+.progress div {
+  height:100%;width:65%;border-radius:10px;
+  background:linear-gradient(90deg,#e8a7c0,#b7a7df);
+  transition:width .5s;
+}
+.week {display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:17px}
+.day {
+  text-align:center;padding:12px 2px;border-radius:12px;
+  font-size:10px;color:var(--muted);
+}
+.day b {display:block;font-size:12px;margin-top:9px;color:var(--ink)}
+.day.today {background:var(--pink-light);color:#b76f91}
+.quote {
+  background:#f7f2fa;padding:19px;border-radius:15px;
+  font-family:'Playfair Display',serif;font-size:15px;
+  line-height:1.7;color:#776c8e;margin-top:18px;
+}
+button {font-family:inherit;cursor:pointer;border:0}
+.primary {
+  background:#c989a7;color:white;padding:12px 19px;
+  border-radius:11px;font-size:11px;font-weight:600;
+  transition:.25s;
+}
+.primary:hover {background:#b77596;transform:scale(1.04)}
+.mobile-menu {display:none}
+@media(max-width:850px){
+  .sidebar{width:75px;padding:25px 10px}
+  .logo{font-size:20px;text-align:center}
+  .logo-sub,.nav-title,.nav-item span,.sidebar-bottom{display:none}
+  .nav-item{justify-content:center;padding:14px 5px}
+  .main{margin-left:75px;width:calc(100% - 75px);padding:25px 4%}
+}
+@media(max-width:600px){
+  .main{padding:20px 15px}
+  .greeting h1{font-size:27px}
+  .hero{padding:22px}
+  .hero h2{font-size:20px}
+  .hero-icon{font-size:40px}
+  .stats{grid-template-columns:1fr}
+  .content-grid{grid-template-columns:1fr}
+  .card{padding:17px}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="logo">LUMI.</div>
+  <div class="logo-sub">YOUR LEARNING SPACE</div>
+
+  <div class="nav-title">WORKSPACE</div>
+  <div class="nav-item active" onclick="navigate(this,'Overview')">⌂ <span>Басты бет</span></div>
+  <div class="nav-item" onclick="navigate(this,'My Tasks')">▤ <span>Тапсырмалар</span></div>
+  <div class="nav-item" onclick="navigate(this,'Calendar')">▦ <span>Күнтізбе</span></div>
+  <div class="nav-item" onclick="navigate(this,'Analytics')">◷ <span>Статистика</span></div>
+
+  <div class="nav-title">PERSONAL</div>
+  <div class="nav-item" onclick="navigate(this,'Notes')">✎ <span>Жазбалар</span></div>
+  <div class="nav-item" onclick="navigate(this,'Settings')">⚙ <span>Баптаулар</span></div>
+
+  <div class="sidebar-bottom">
+    ✨ <b>Little steps matter.</b><br>
+    Every day is a new chance to grow.
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div class="date" id="date"></div>
+    <div class="avatar">L</div>
+  </div>
+
+  <div class="greeting">
+    <h1>Қайырлы күн! ✨</h1>
+    <p>Бүгін өзің үшін кішкентай жетістік жаса.</p>
+  </div>
+
+  <div class="hero">
+    <div>
+      <h2>Make today beautiful.</h2>
+      <p>Жоспарларыңды орындап, мақсаттарыңа<br>
+      бір қадам жақындай түс.</p>
+    </div>
+    <div class="hero-icon">🌷</div>
+  </div>
+
+  <div class="section-head">
+    <h3>Сенің прогресің</h3>
+    <span>WEEKLY OVERVIEW ↗</span>
+  </div>
+
+  <div class="stats">
+    <div class="card">
+      <div class="stat-icon" style="background:#fff0f5">📚</div>
+      <h2 id="completed">0</h2>
+      <p>Орындалған тапсырма</p>
+    </div>
+    <div class="card">
+      <div class="stat-icon" style="background:#f1edfc">⏳</div>
+      <h2>4.5 h</h2>
+      <p>Оқу уақыты</p>
+    </div>
+    <div class="card">
+      <div class="stat-icon" style="background:#fff6e9">🌟</div>
+      <h2>85%</h2>
+      <p>Апталық прогресс</p>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h3>Бүгінгі жоспар</h3>
+    <button class="primary" onclick="addTask()">+ Тапсырма қосу</button>
+  </div>
+
+  <div class="content-grid">
+    <div class="card">
+      <h3 style="font-size:14px">My daily tasks</h3>
+      <div id="tasks">
+        <label class="task">
+          <input type="checkbox" onchange="updateTasks(this)">
+          <div><div class="task-name">TOEFL vocabulary</div><div class="task-sub">09:00 · English</div></div>
+        </label>
+        <label class="task">
+          <input type="checkbox" onchange="updateTasks(this)">
+          <div><div class="task-name">World History</div><div class="task-sub">11:00 · Study</div></div>
+        </label>
+        <label class="task">
+          <input type="checkbox" onchange="updateTasks(this)">
+          <div><div class="task-name">Reading practice</div><div class="task-sub">15:00 · English</div></div>
+        </label>
+        <label class="task">
+          <input type="checkbox" onchange="updateTasks(this)">
+          <div><div class="task-name">Daily revision</div><div class="task-sub">18:00 · Review</div></div>
+        </label>
+      </div>
+      <div class="progress"><div id="bar"></div></div>
+      <p id="progressText" style="margin-top:9px;font-size:10px">0% completed</p>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size:14px">This week</h3>
+      <div class="week">
+        <div class="day">MON<b>23</b></div>
+        <div class="day">TUE<b>24</b></div>
+        <div class="day">WED<b>25</b></div>
+        <div class="day">THU<b>26</b></div>
+        <div class="day today">FRI<b>27</b></div>
+        <div class="day">SAT<b>28</b></div>
+        <div class="day">SUN<b>29</b></div>
+      </div>
+      <div class="quote">
+        "Small progress is still progress."
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<script>
+const now = new Date();
+document.getElementById('date').textContent =
+now.toLocaleDateString('kk-KZ',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+function updateTasks(input) {
+  input.parentElement.classList.toggle('done',input.checked);
+  const tasks = [...document.querySelectorAll('#tasks input')];
+  const done = tasks.filter(t=>t.checked).length;
+  const percent = tasks.length ? done/tasks.length*100 : 0;
+  document.getElementById('completed').textContent=done;
+  document.getElementById('bar').style.width=percent+'%';
+  document.getElementById('progressText').textContent=Math.round(percent)+'% completed';
+}
+
+function addTask() {
+  const name=prompt('Жаңа тапсырма атауы:');
+  if(!name || !name.trim()) return;
+  const label=document.createElement('label');
+  label.className='task';
+  const input=document.createElement('input');
+  input.type='checkbox';
+  input.onchange=()=>updateTasks(input);
+  const content=document.createElement('div');
+  const title=document.createElement('div');
+  title.className='task-name';
+  title.textContent=name.trim();
+  const sub=document.createElement('div');
+  sub.className='task-sub';
+  sub.textContent='New task · Today';
+  content.append(title,sub);
+  label.append(input,content);
+  document.getElementById('tasks').append(label);
+  updateTasks(input);
+  updateTasks(input);
+}
+
+function navigate(el,page) {
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+  if(page==='My Tasks') document.querySelector('.section-head').scrollIntoView({behavior:'smooth'});
+  else if(page==='Overview') window.scrollTo({top:0,behavior:'smooth'});
+  else alert(page+' бөлімі келесі нұсқада жасалады ✨');
+}
+</script>
+</body>
+</html>
